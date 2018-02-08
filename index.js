@@ -24,15 +24,21 @@ export default class Drawer extends Component {
   _syncAfterUpdate = false;
   _interactionHandle = null;
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      viewport: {
+        width: deviceScreen.width - props.initialWidthOffset,
+        height: deviceScreen.height - props.initialHeightOffset,
+      }
+    };
+  }
+
   static tweenPresets = {
     parallax: (ratio, side = 'left') => {
       let drawer = { [side] : -150 * (1 - ratio)}
       return { drawer }
     }
-  };
-
-  state = {
-    viewport: deviceScreen
   };
 
   static propTypes = {
@@ -66,6 +72,8 @@ export default class Drawer extends Component {
     tweenHandler: PropTypes.func,
     type: PropTypes.oneOf(['overlay', 'static', 'displace']),
     useInteractionManager: PropTypes.bool,
+    initialHeightOffset: PropTypes.number,
+    initialWidthOffset: PropTypes.number,
 
     // deprecated
     panStartCompensation: PropTypes.bool,
@@ -79,6 +87,8 @@ export default class Drawer extends Component {
     type: 'displace',
     closedDrawerOffset: 0,
     openDrawerOffset: 0,
+    initialHeightOffset: 0,
+    initialWidthOffset: 0,
     panThreshold: 0.25, // @TODO consider rename to panThreshold
     panOpenMask: null, // defaults to closedDrawerOffset
     panCloseMask: null, // defaults to openDrawerOffset
